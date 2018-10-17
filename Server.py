@@ -280,9 +280,10 @@ def printFlagMeh(s):
 def serverSetup():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #host = socket.gethostname()
+    ip = ''
     port = 57777
     print('Settig up server... ')
-    s.bind(('206.189.233.228', port))
+    s.bind((ip, port))
     s.listen(5)
     print('Waiting for clients... ')
     while True:
