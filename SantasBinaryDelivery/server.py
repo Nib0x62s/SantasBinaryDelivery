@@ -23,7 +23,7 @@ class Server:
 
     def server_bind(self):
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.socket.connect((self.address, self.port))
+        self.socket.bind((self.address, self.port))
 
     def server_listen(self):
         self.socket.listen(5)
