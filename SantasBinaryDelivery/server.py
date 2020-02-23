@@ -1,3 +1,4 @@
+import logging
 import threading
 import socket
 
@@ -17,6 +18,7 @@ class Server:
             try:
                 handle, _ = self.socket.accept()
                 request_handler = RequestHandler(handle)
+                request_handler.handle_requests()
             except socket.error:
                 self.__shutdown_server.set()
                 self.server_close()
@@ -33,10 +35,9 @@ class Server:
 
 
 class RequestHandler:
-
     def __init__(self, handle):
         self._handle = handle
-        self.init_message = """
+        self.init_message = b"""
         ==============================
                Default Response
         ==============================
@@ -46,6 +47,9 @@ class RequestHandler:
         self.respond_init()
         while True:
             message = self._handle.recv(4029)
+            if len(message) <= 0:
+                self._handle.close()
+                return
             print(message)
 
     def respond_init(self):
