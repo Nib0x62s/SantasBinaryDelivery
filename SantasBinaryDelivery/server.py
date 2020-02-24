@@ -1,13 +1,16 @@
+from .constants import INIT_MESSAGE
+
 import logging
-import threading
 import socket
+import threading
 
 
 class Server:
-    def __init__(self, address='0.0.0.0', port=None):
+    def __init__(self, handler_klass, address='0.0.0.0', port=None):
         self.address = address
         self.port = port
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.handler_klass = handler_klass
         self.__shutdown_server = threading.Event()
 
     def start_server(self):
@@ -15,15 +18,11 @@ class Server:
         self.server_bind()
         self.server_listen()
         while not self.__shutdown_server.is_set():
-            print('Waiting for connections..')
             try:
                 handle, _ = self.socket.accept()
-                if handle:
-                    print('handle made...')
-                request_handler = RequestHandler(handle)
+                request_handler = self.handler_klass(handle)
                 handler_thread = threading.Thread(target=request_handler.handle_requests, daemon=True)
                 handler_thread.start()
-                print('handler_thread started')
             except socket.error:
                 self.__shutdown_server.set()
                 self.server_close()
@@ -42,11 +41,7 @@ class Server:
 class RequestHandler:
     def __init__(self, handle):
         self._handle = handle
-        self.init_message = b"""
-        ==============================
-               Default Response
-        ==============================
-        """
+        self.init_message = INIT_MESSAGE
 
     def handle_requests(self):
         self.respond_init()
