@@ -15,10 +15,15 @@ class Server:
         self.server_bind()
         self.server_listen()
         while not self.__shutdown_server.is_set():
+            print('Waiting for connections..')
             try:
                 handle, _ = self.socket.accept()
+                if handle:
+                    print('handle made...')
                 request_handler = RequestHandler(handle)
-                request_handler.handle_requests()
+                handler_thread = threading.Thread(target=request_handler.handle_requests, daemon=True)
+                handler_thread.start()
+                print('handler_thread started')
             except socket.error:
                 self.__shutdown_server.set()
                 self.server_close()

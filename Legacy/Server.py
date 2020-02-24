@@ -281,7 +281,7 @@ def serverSetup():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #host = socket.gethostname()
     ip = ''
-    port = 57777
+    port = 57776
     print('Settig up server... ')
     s.bind((ip, port))
     s.listen(5)
