@@ -1,1 +1,1 @@
-from .engine import start_challenge
+from .startup import main

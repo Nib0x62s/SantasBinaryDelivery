@@ -1,6 +1,3 @@
-from .constants import INIT_MESSAGE
-
-import logging
 import socket
 import threading
 
@@ -41,18 +38,8 @@ class Server:
 class RequestHandler:
     def __init__(self, handle):
         self._handle = handle
-        self.init_message = INIT_MESSAGE
 
     def handle_requests(self):
-        self.respond_init()
-        while True:
-            message = self._handle.recv(4029)
-            if len(message) <= 0:
-                self._handle.close()
-                return
-            print(message)
-
-    def respond_init(self):
-        self._handle.send(self.init_message)
+        return
 
 

@@ -1,3 +1,3 @@
 import SantasBinaryDelivery
 
-SantasBinaryDelivery.start_challenge()
+SantasBinaryDelivery.main()

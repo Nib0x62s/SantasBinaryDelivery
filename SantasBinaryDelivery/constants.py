@@ -1,1 +1,2 @@
-INIT_MESSAGE = b"""==================\n\t\tDEFAULT MESSAGE\t\t\n==================\n"""
+# Server init
+SANTAS_INIT_MESSAGE = "Welcome! :D"
